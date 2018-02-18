@@ -16,6 +16,130 @@ int main(void)
 {
 	HAL_Init();
 	MX_USART2_UART_Init();
+	//#########PARTE NUOVA##########
+	float vettore1[10] = { 45,4,5,7,2,1,8,66,8,12 };
+		//float vettore1[10] = { 5,5,5,5,5,5,5,5,5,5 };
+		float trainingSetAcceleration[nOfSamples][vectorLength] =
+		{
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 48,47,56,71,32,51,98,6,88,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 }
+		};
+		float trainingSetDirection[nOfSamples][vectorLength]=
+		{
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 },
+				{ 45,4,5,7,2,1,8,66,8,12 }
+		};
+		float trainingSetFeatures[nOfSamples][nOfFeatures];
+		/*
+		indici trainingFeatures:
+		0 : media accelerazione
+		1 : media direzione
+		2 : deviazione standard accelerazione
+		3 : deviazione standard direzione
+		4 : correlazione tra accelerazione e direzione
+		*/
+
+		//estrazione delle features dei vettori di training
+		for (int ri = 0; ri < nOfSamples; ri++)
+		{
+			trainingSetFeatures[ri][0] = calculateMean(&trainingSetAcceleration[ri]);
+			trainingSetFeatures[ri][1] = calculateMean(&trainingSetDirection[ri]);
+			trainingSetFeatures[ri][2] = sqrt(calculateVar(&trainingSetAcceleration[ri],trainingSetFeatures[ri][0]));
+			trainingSetFeatures[ri][3] = sqrt(calculateVar(&trainingSetDirection[ri], trainingSetFeatures[ri][1]));
+			trainingSetFeatures[ri][4] = calculateCorr(trainingSetAcceleration[ri], trainingSetDirection[ri], trainingSetFeatures[ri][0], trainingSetFeatures[ri][1], trainingSetFeatures[ri][3], trainingSetFeatures[ri][4]);
+		}
+
+		//etichette del training set (note)
+		//
+		// 0: appartenenza a "classe1"
+		// 1: appartenenza a "classe2"
+		int trainingLabels[nOfSamples] = {0,1,1,0,1,1,1,0,1,1,1,1,1,0,1,1,1,1,1,0};
+
+		//float sampleToClassify_acceleration[vectorLength] = { 35,1,2,3,66,0,12,6,18,1 };
+		//float sampleToClassify_direction[vectorLength] = { 4,21,6,6,18,10,9,61,12,11 };
+
+		//test
+		float sampleToClassify_acceleration[vectorLength] = { 45,4,5,7,2,1,8,66,8,12 };
+		float sampleToClassify_direction[vectorLength] = { 45,4,5,7,2,1,8,66,8,12 };
+
+		float sampleFeatures[nOfFeatures] = { 0 };
+		//feature extraction
+		sampleFeatures[0] = calculateMean(sampleToClassify_acceleration);
+		sampleFeatures[1] = calculateMean(sampleToClassify_direction);
+		sampleFeatures[2] = sqrt(calculateVar(sampleToClassify_acceleration, sampleFeatures[0]));
+		sampleFeatures[3] = sqrt(calculateVar(sampleToClassify_direction, sampleFeatures[1]));
+		sampleFeatures[4] = calculateCorr(sampleToClassify_acceleration, sampleToClassify_direction, sampleFeatures[0], sampleFeatures[1], sampleFeatures[2], sampleFeatures[3]);
+
+		//test per verificare che calculate distance funzioni
+		/*
+		float sampleFeatures2[nOfFeatures] = { 0 };
+		sampleFeatures2[0] = sampleFeatures[0];
+		sampleFeatures2[1] = sampleFeatures[1];
+		sampleFeatures2[2] = sampleFeatures[2];
+		sampleFeatures2[3] = 21;
+		sampleFeatures2[4] = sampleFeatures[4];
+		float d = calculateDistance(sampleFeatures, sampleFeatures2);
+		*/
+
+		int knn_index[nOfSamples] = { 0 };
+		for (int i = 0; i < nOfSamples; i++)
+		{
+			knn_index[i] = i;
+		}
+		//ordina gli indici contenuti in knn_index in maniera crescente rispetto alla distanza, in maniera da mantenere un
+		//riferimento al rispettivo vettore di training
+		findKNN(trainingSetFeatures, knn_index, sampleFeatures);
+
+		//sfrutta gli indici ordinati e va a vedere il rispettivo valore di essi per capire la classe del vettore sampleToClassify
+		int sampleLabel = classificate(trainingLabels, knn_index);
+
+		if (sampleLabel == 0)
+		{
+			printf("Classe 1");
+		}
+		else
+			printf("Classe 2");
+
+	int a = 0;
+
+	//#########FINE PARTE NUOVA#####
+
 	//lettura training
 	//training vero e proprio
 
@@ -27,7 +151,7 @@ int main(void)
 
 	//float *media;
 	//float *varianza;
-
+/*
 	float vettore1[10]={45,4,5,7,2,1,8,66,8,12};
 	int vectorLength = sizeof(vettore1)/sizeof(vettore1[0]);
 	float tempMedia1 = calculateMean(vettore1, vectorLength);
@@ -65,13 +189,13 @@ int main(void)
 		//HAL_StatusTypeDef HAL_UART_Transmit(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout)
 
 
-		/*
+
 			HAL_UART_Transmit(&huart2, (uint8_t*)c1, strlen(c1), 0xFFFF);
 			HAL_Delay(100);
 			HAL_UART_Transmit(&huart2, (uint8_t*)c2, strlen(c2), 0xFFFF);
 			HAL_Delay(100);
 			HAL_UART_Transmit(&huart2, (uint8_t*)c3, strlen(c3), 0xFFFF);
-*/
+
 		//HAL_UART_Transmit(&huart2, (uint8_t*)test, strlen(test), 0xFFFF);
 /*
 			HAL_UART_Transmit(&huart2, (uint8_t*)&media, numOfDigits(media), 0xFFFF);
@@ -84,6 +208,7 @@ int main(void)
 			HAL_Delay(1000);
 			*/
 			//char test[] = "Media:\t\t\t"
+	/*
 			*test = "Media1:\t\t\t";
     		HAL_UART_Transmit(&huart2, (uint8_t*)test, strlen(test), 0xFFFF);
 			snprintf(buffer, sizeof buffer, "%d", media1);
@@ -106,8 +231,9 @@ int main(void)
 	    	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	    	HAL_Delay(1000);
 		}
-
+*/
 }
+
 //inizializzazione della seriale
 void MX_USART2_UART_Init(void)
 {
