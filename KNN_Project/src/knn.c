@@ -38,7 +38,7 @@ void findKNN(float trainingFeatures[nOfSamples][nOfFeatures], int index[], float
 	for (int i = 0; i < nOfSamples; i++)
 	{
 		distances[i] = calculateDistance(temp[i], sampleFeatures);
-	}
+}
 	//codice trovato per il sorting
 
 	//float a[vectorLength] = { 3,4,7,6,5,1,2,8,10,9 };           //Array declaration size-10
@@ -85,7 +85,8 @@ int classificate(int labels[], int indexes[])
 	for (int i = 0; i < k; i++)
 	{
 		//labels contiene 1 oppure 0 a seconda che sia una classe o l'altra
-		score = score + labels[i];
+		int tmp = indexes[i];
+		score = score + labels[tmp];
 	}
 	if (score > 3)
 		return 1;
