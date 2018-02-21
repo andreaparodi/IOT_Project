@@ -9,6 +9,7 @@
 #define KNN_H_
 
 #include "main.h"
+
 #define nOfSamples 20
 #define nOfFeatures 5
 

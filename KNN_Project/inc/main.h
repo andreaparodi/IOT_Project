@@ -3,6 +3,7 @@
 #include "vector_extraction.h"
 #include "knn.h"
 #include <stdio.h>
+#include <string.h>
 
 #ifndef MAIN_H_
 #define MAIN_H_

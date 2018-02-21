@@ -7,18 +7,16 @@
  * @brief   Default main function.
  ******************************************************************************
  */
-
 #include "main.h"
-
-#include <string.h>
 
 int main(void)
 {
 	HAL_Init();
 	MX_USART2_UART_Init();
 
+
 	//#########PARTE NUOVA##########
-	float vettore1[10] = { 45,4,5,7,2,1,8,66,8,12 };
+	//float vettore1[10] = { 45,4,5,7,2,1,8,66,8,12 };
 	char buffer[100];
 		char *newline = "\n\r";
 		char *tab = "\t";
@@ -149,7 +147,7 @@ int main(void)
 	//char *newline = "\n\r\r";
 	//char *tab = "\t";
 
-	char test[100];
+	//char test[100];
 	//char buffer[100];
 
 	for(int i = 0; i<nOfSamples;i++)
@@ -188,16 +186,9 @@ int main(void)
 
 	//#########FINE PARTE NUOVA#####
 
-	//lettura training
-	//training vero e proprio
-
-
-	char *c1 = "Acceleration\t\t";
-	char *c2 = "Speed\t\t";
-	char *c3 = "Direction\r\n";
-
-
-
+	//char *c1 = "Acceleration\t\t";
+	//char *c2 = "Speed\t\t";
+	//char *c3 = "Direction\r\n";
 	//int prova = 124;
 
 	for(;;)
@@ -233,7 +224,6 @@ int main(void)
 	}
 }
 
-
 //inizializzazione della seriale
 void MX_USART2_UART_Init(void)
 {
@@ -247,6 +237,7 @@ void MX_USART2_UART_Init(void)
 	HAL_UART_Init(&huart2);
 }
 //configurazione dei pin per comunicazione
+
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
