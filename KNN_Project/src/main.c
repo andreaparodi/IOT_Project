@@ -23,8 +23,8 @@ int main(void)
 	char *newline = "\n\r";
 	char *tab = "\t";
 
-	float acceleration_data[3];
-	float gyro_data[3];
+	float acceleration_data[3]={0};
+	float gyro_data[3]={0};
 	//float vettore1[10] = { 5,5,5,5,5,5,5,5,5,5 };
 	float trainingSetAcceleration[nOfSamples][vectorLength] =
 	{
@@ -205,7 +205,18 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
-
+	placeHolder="Gyr_X";
+	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	placeHolder="Gyr_Y";
+	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	placeHolder="Gyr_Z";
+	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 
 	//#########FINE PARTE NUOVA#####
@@ -243,10 +254,17 @@ int main(void)
 			HAL_Delay(100);
 			HAL_UART_Transmit(&huart2, (uint8_t*)c3, strlen(c3), 0xFFFF);
 		 */
-
+		LSM6DS0_ReadAcceleration(acceleration_data);
+		LSM6DS0_ReadGyro(gyro_data);
 		for(int i = 0; i<3;i++)
 		{
 			snprintf(buffer, sizeof buffer, "%f", acceleration_data[i]);
+			HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+		}
+		for(int i = 0; i<3;i++)
+		{
+			snprintf(buffer, sizeof buffer, "%f", gyro_data[i]);
 			HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
 			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 		}
