@@ -21,6 +21,9 @@ int main(void)
 	char buffer[100];
 		char *newline = "\n\r";
 		char *tab = "\t";
+
+		float acceleration_data[3];
+		float gyro_data[3];
 	//float vettore1[10] = { 5,5,5,5,5,5,5,5,5,5 };
 	float trainingSetAcceleration[nOfSamples][vectorLength] =
 	{
@@ -184,6 +187,9 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	//int a = 0;
+
+	LSM6DS0_ReadAcceleration();
+	LSM6DS0_ReadGyro();
 
 	//#########FINE PARTE NUOVA#####
 

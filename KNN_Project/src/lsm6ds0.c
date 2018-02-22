@@ -12,7 +12,7 @@ uint8_t LSM6DS0_WhoAmI(void)
 	const uint8_t I2C_RXBUFFERSIZE = 1;
 	uint8_t I2C_RxBuffer[I2C_RXBUFFERSIZE];
 
-	I2C_RxBuffer[0] = LSM6DS0_Who_Am_I();
+	I2C_RxBuffer[0] = LSM6DS0_WHO_AM_I;
 
 	HAL_I2C_Master_Transmit(&I2C1Handle, (uint16_t)LSM6DS0_add<<1  & 0xFE, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
 	HAL_I2C_Master_Receive(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
@@ -45,7 +45,7 @@ void LSM6DS0_Config(uint8_t ctrl1g, uint8_t ctrl2g, uint8_t ctrl3g, uint8_t ctrl
 	HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG3_G, 1, (uint8_t *)&I2C_TxBuffer[2], 1, 10000);
 	HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG4, 1, (uint8_t *)&I2C_TxBuffer[3], 1, 10000);
 	HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG5_XL, 1, (uint8_t *)&I2C_TxBuffer[4], 1, 10000);
-	HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG6_XL, 1, (uint8_t *)&I2C_TxBuffer[5], 1, 10000);
+	//HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG6_XL, 1, (uint8_t *)&I2C_TxBuffer[5], 1, 10000);
 	HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG7_XL, 1, (uint8_t *)&I2C_TxBuffer[6], 1, 10000);
 	HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG8, 1, (uint8_t *)&I2C_TxBuffer[7], 1, 10000);
 	HAL_I2C_Mem_Write(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 & 0xFE, LSM6DS0_CTRL_REG9, 1, (uint8_t *)&I2C_TxBuffer[8], 1, 10000);
@@ -58,7 +58,7 @@ void LSM6DS0_ReadAcceleration(float vect[])
 {
 
 }
-void LSM6DS0_ReadDirection(float vect[])
+void LSM6DS0_ReadGyro(float vect[])
 {
 
 }
