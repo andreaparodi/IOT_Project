@@ -56,11 +56,53 @@ void LSM6DS0_Config(uint8_t ctrl1g, uint8_t ctrl2g, uint8_t ctrl3g, uint8_t ctrl
 //Da inserire la lettura dei dati (->Vedi ultimo lab, commento di seguito)
 void LSM6DS0_ReadAcceleration(float vect[])
 {
+	const uint8_t	I2C_RXBUFFERSIZE = 2;
 
+	uint8_t I2C_RxBuffer[I2C_RXBUFFERSIZE];
+	float X_acc, Y_acc, Z_acc;
+
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_L_G, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_H_G, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
+	int16_t dataX = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
+	X_acc = (float)dataX;
+	//*mH+(float)HTS221_H0_rHx2/2;
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_L_G, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_H_G, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
+	int16_t dataY = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
+	Y_acc = (float)dataY;
+
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_L_G, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_H_G, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
+	int16_t dataZ = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
+	Z_acc = (float)dataZ;
+	vect[0]=X_acc;
+	vect[1]=Y_acc;
+	vect[2]=Z_acc;
 }
 void LSM6DS0_ReadGyro(float vect[])
 {
+	const uint8_t	I2C_RXBUFFERSIZE = 2;
 
+	uint8_t I2C_RxBuffer[I2C_RXBUFFERSIZE];
+	float X_gyr, Y_gyr, Z_gyr;
+
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_L_XL, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_H_XL, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
+	int16_t dataX = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
+	X_gyr = (float)dataX;
+	//*mH+(float)HTS221_H0_rHx2/2;
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_L_XL, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_H_XL, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
+	int16_t dataY = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
+	Y_gyr = (float)dataY;
+
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_L_XL, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
+	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_H_XL, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
+	int16_t dataZ = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
+	Z_gyr = (float)dataZ;
+	vect[0]=X_gyr;
+	vect[1]=Y_gyr;
+	vect[2]=Z_gyr;
 }
 
 /*float LPS25HB_ReadPressure(void)

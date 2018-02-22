@@ -62,7 +62,7 @@ void	LSM6DS0_ReadCalib(void);
  #define LSM6DS0_CTRL_REG2_G	0x11
  #define LSM6DS0_CTRL_REG3_G	0x12
  #define LSM6DS0_ORIENT_CFG_G	0X13
-#define LSM6DS0_OUT_X_L_G		0x18
+ #define LSM6DS0_OUT_X_L_G		0x18
  #define LSM6DS0_OUT_X_H_G		0x19
  #define LSM6DS0_OUT_Y_L_G		0x1A
  #define LSM6DS0_OUT_Y_H_G		0x1B
@@ -90,6 +90,6 @@ void	LSM6DS0_ReadCalib(void);
  void LSM6DS0_Config(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t); //Chiedere Ansovini per registri
  uint8_t LSM6DS0_Who_Am_I(void);
 void LSM6DS0_ReadAcceleration(float vect[]);
-void LSM6DS0_ReadDirection(float vect[]);
+void LSM6DS0_ReadGyro(float vect[]);
 
  #endif

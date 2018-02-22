@@ -11,6 +11,7 @@
 
 int main(void)
 {
+
 	HAL_Init();
 	MX_USART2_UART_Init();
 
@@ -19,11 +20,11 @@ int main(void)
 	//#########PARTE NUOVA##########
 	//float vettore1[10] = { 45,4,5,7,2,1,8,66,8,12 };
 	char buffer[100];
-		char *newline = "\n\r";
-		char *tab = "\t";
+	char *newline = "\n\r";
+	char *tab = "\t";
 
-		float acceleration_data[3];
-		float gyro_data[3];
+	float acceleration_data[3];
+	float gyro_data[3];
 	//float vettore1[10] = { 5,5,5,5,5,5,5,5,5,5 };
 	float trainingSetAcceleration[nOfSamples][vectorLength] =
 	{
@@ -165,11 +166,11 @@ int main(void)
 	for(int i = 0; i<nOfSamples;i++)
 	{
 		int temp=knn_index[i];
-			snprintf(buffer, sizeof buffer, "%d", trainingLabels[temp]);
-			HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
-		}
-		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+		snprintf(buffer, sizeof buffer, "%d", trainingLabels[temp]);
+		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+		HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	}
+	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 
 	//sfrutta gli indici ordinati e va a vedere il rispettivo valore di essi per capire la classe del vettore sampleToClassify
 	int sampleLabel = classificate(trainingLabels, knn_index);
@@ -188,8 +189,24 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	//int a = 0;
 
-	LSM6DS0_ReadAcceleration();
-	LSM6DS0_ReadGyro();
+	LSM6DS0_ReadAcceleration(acceleration_data);
+	LSM6DS0_ReadGyro(gyro_data);
+
+	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+	char *placeHolder = "Acc_X";
+	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	placeHolder="Acc_Y";
+	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	placeHolder="Acc_Z";
+	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+
+	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 
 	//#########FINE PARTE NUOVA#####
 
@@ -226,6 +243,14 @@ int main(void)
 			HAL_Delay(100);
 			HAL_UART_Transmit(&huart2, (uint8_t*)c3, strlen(c3), 0xFFFF);
 		 */
+
+		for(int i = 0; i<3;i++)
+		{
+			snprintf(buffer, sizeof buffer, "%f", acceleration_data[i]);
+			HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 		HAL_Delay(10000);
 
 	}
