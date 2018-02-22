@@ -3,6 +3,7 @@
 #include "vector_extraction.h"
 #include "knn.h"
 #include "i2c.h"
+#include "lsm6ds0.h"
 #include <stdio.h>
 #include <string.h>
 

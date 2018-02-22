@@ -14,6 +14,7 @@ int main(void)
 	HAL_Init();
 	MX_USART2_UART_Init();
 
+	LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
 
 	//#########PARTE NUOVA##########
 	//float vettore1[10] = { 45,4,5,7,2,1,8,66,8,12 };

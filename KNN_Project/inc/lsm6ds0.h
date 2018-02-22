@@ -12,7 +12,7 @@
 
 #define LSM6DS0_add				0x5F	//HTS221 7bit address (<<1|1 for read, <<1&0xFE for write)
 #define LSM6DS0_Who_Am_I		0x0F
-#define LSM6DS0_Who_Am_I_Val	0xBC
+#define LSM6DS0_Who_Am_I_Val	0xBC //
 #define LSM6DS0_AV_Conf			0x10
 #define LSM6DS0_CTRL_Reg1		0x20
 #define LSM6DS0_CTRL_Reg2		0x21
@@ -42,14 +42,27 @@ void	LSM6DS0_ReadCalib(void);
  #define LSM6DS0_H_
 
  #include "i2c.h"
+/*
+#define ACT_THS  0x04
+#define ACT_DUR  0x05
+#define INT_GEN_CFG_XL 0x06
+#define INT_GEN_THS_X_XL  0x07
+#define INT_GEN_THS_Y_XL 0x08
+#define INT_GEN_THS_Z_XL 0x09
+#define INT_GEN_DUR_XL 0x0A
+#define REFERENCE_G  0x0B
+#define INT_CTRL 0x0C
+*/
 
- #define LSM6DS0_REFERENCE_G  	0x0B
+ #define LSM6DS0_add			0x5F // nel datasheet non fa riferimento a nessun 0x5F sia per l'hts221 che per questo quindi dovrebbe essere un registro temp
+
+#define LSM6DS0_REFERENCE_G  	0x0B
  #define LSM6DS0_WHO_AM_I  		0x0F
  #define LSM6DS0_CTRL_REG1_G  	0X10 //Modificare questi tre basandosi su tabella pag.39
  #define LSM6DS0_CTRL_REG2_G	0x11
  #define LSM6DS0_CTRL_REG3_G	0x12
  #define LSM6DS0_ORIENT_CFG_G	0X13
- #define LSM6DS0_OUT_X_L_G		0x18
+#define LSM6DS0_OUT_X_L_G		0x18
  #define LSM6DS0_OUT_X_H_G		0x19
  #define LSM6DS0_OUT_Y_L_G		0x1A
  #define LSM6DS0_OUT_Y_H_G		0x1B
@@ -74,9 +87,9 @@ void	LSM6DS0_ReadCalib(void);
  //Definizione variabili di uscita/di conversione/ecc.. ->
  //
 
- void LSM6DS0_Config(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t); //Chiedere Ansovini per registri
- uint8_t LSM6DS0_WhoAmI(void);
- float[3] LSM6DS0_ReadAcceleration(void);
- float[3] LSM6DS0_ReadDirection(void);
+ void LSM6DS0_Config(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t); //Chiedere Ansovini per registri
+ uint8_t LSM6DS0_Who_Am_I(void);
+void LSM6DS0_ReadAcceleration(float vect[]);
+void LSM6DS0_ReadDirection(float vect[]);
 
  #endif
