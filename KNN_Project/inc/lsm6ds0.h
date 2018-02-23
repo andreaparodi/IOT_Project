@@ -54,7 +54,7 @@ void	LSM6DS0_ReadCalib(void);
 #define INT_CTRL 0x0C
 */
 
- #define LSM6DS0_add			0x5F // nel datasheet non fa riferimento a nessun 0x5F sia per l'hts221 che per questo quindi dovrebbe essere un registro temp
+ #define LSM6DS0_add			0x5D // nel datasheet non fa riferimento a nessun 0x5F sia per l'hts221 che per questo quindi dovrebbe essere un registro temp
 
 #define LSM6DS0_REFERENCE_G  	0x0B
  #define LSM6DS0_WHO_AM_I  		0x0F
@@ -81,6 +81,9 @@ void	LSM6DS0_ReadCalib(void);
  #define LSM6DS0_OUT_Y_H_XL		0X2B
  #define LSM6DS0_OUT_Z_L_XL		0X2C
  #define LSM6DS0_OUT_Z_H_XL		0X2D
+
+//#define LSM6DS0_FIFO_CTRL 0x2E inizializzato nel config a valore 11000000 (0xC0)
+// usa la FIFO in modalità continua piuttosto che in "ByPass mode"
 
  FunctionalState LSM6DS0_present;
 

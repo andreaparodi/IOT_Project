@@ -15,7 +15,7 @@
 //numero dei vettori di training
 #define nOfSamples 20
 //numero di features che vengono estratte (media acc, media direz, devstand acc, devstand direz, correlaz acc/direz)
-#define nOfFeatures 5
+#define nOfFeatures 15
 //numero di vicini considerati
 #define k 7
 
@@ -23,5 +23,4 @@ UART_HandleTypeDef huart2;
 
 //functions
 void MX_USART2_UART_Init(void);
-
 #endif /* MAIN_H_ */

@@ -14,18 +14,156 @@ int main(void)
 
 	HAL_Init();
 	MX_USART2_UART_Init();
-
+	I2C1_init();
 	LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
 
 	//#########PARTE NUOVA##########
-	//float vettore1[10] = { 45,4,5,7,2,1,8,66,8,12 };
 	char buffer[100];
 	char *newline = "\n\r";
 	char *tab = "\t";
 
 	float acceleration_data[3]={0};
 	float gyro_data[3]={0};
-	//float vettore1[10] = { 5,5,5,5,5,5,5,5,5,5 };
+
+	float trainingSetAccelerationX[nOfSamples][vectorLength]=
+	{
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 }
+};
+	float trainingSetAccelerationY[nOfSamples][vectorLength]=
+	{
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 }
+};
+	float trainingSetAccelerationZ[nOfSamples][vectorLength]=
+	{
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 }
+};
+	float trainingSetGyroX[nOfSamples][vectorLength]=
+	{
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 }
+};
+	float trainingSetGyroY[nOfSamples][vectorLength]=
+	{
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 }
+};
+	float trainingSetGyroZ[nOfSamples][vectorLength]=
+	{
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 },
+		{ 45,4,5,7,2,1,8,66,8,12 }
+};
+/*
 	float trainingSetAcceleration[nOfSamples][vectorLength] =
 	{
 			{ 98,97,102,124,135,100,89,126,89,122 },
@@ -74,7 +212,7 @@ int main(void)
 			{ 45,4,5,7,2,1,8,66,8,12 },
 			{ 45,4,5,7,2,1,8,66,8,12 }
 	};
-
+*/
 
 
 	//etichette del training set (note)
@@ -94,6 +232,7 @@ int main(void)
 	 */
 
 	//estrazione delle features dei vettori di training
+	/*
 	for (int ri = 0; ri < nOfSamples; ri++)
 	{
 		trainingSetFeatures[ri][0] = calculateMean(trainingSetAcceleration[ri]);
@@ -102,7 +241,47 @@ int main(void)
 		trainingSetFeatures[ri][3] = sqrt(calculateVar(trainingSetDirection[ri], trainingSetFeatures[ri][1]));
 		trainingSetFeatures[ri][4] = calculateCorr(trainingSetAcceleration[ri], trainingSetDirection[ri], trainingSetFeatures[ri][0], trainingSetFeatures[ri][1], trainingSetFeatures[ri][2], trainingSetFeatures[ri][3]);
 	}
+	*/
+	/*
+	  indici trainingFeatures:
+	  0		media accelerazione x
+	  1		media accelerazione y
+	  2		media accelerazione z
+	  3		media gyro x
+	  4		media gyro y
+	  5		media gyro z
+	  6		dev accelerazione x
+	  7		dev accelerazione y
+	  8		dev accelerazione z
+	  9		dev gyro x
+	  10	dev gyro y
+	  11	dev gyro z
+	  12	corr x
+	  13	corr y
+	  14	corr z
+	 */
+	for (int ri = 0; ri < nOfSamples; ri++)
+		{
+			trainingSetFeatures[ri][0] = calculateMean(trainingSetAccelerationX[ri]);
+			trainingSetFeatures[ri][1] = calculateMean(trainingSetAccelerationY[ri]);
+			trainingSetFeatures[ri][2] = calculateMean(trainingSetAccelerationZ[ri]);
 
+			trainingSetFeatures[ri][3] = calculateMean(trainingSetGyroX[ri]);
+			trainingSetFeatures[ri][4] = calculateMean(trainingSetGyroY[ri]);
+			trainingSetFeatures[ri][5] = calculateMean(trainingSetGyroZ[ri]);
+
+			trainingSetFeatures[ri][6] = sqrt(calculateVar(trainingSetAccelerationX[ri],trainingSetFeatures[ri][0]));
+			trainingSetFeatures[ri][7] = sqrt(calculateVar(trainingSetAccelerationY[ri],trainingSetFeatures[ri][1]));
+			trainingSetFeatures[ri][8] = sqrt(calculateVar(trainingSetAccelerationZ[ri],trainingSetFeatures[ri][2]));
+
+			trainingSetFeatures[ri][9] = sqrt(calculateVar(trainingSetGyroX[ri],trainingSetFeatures[ri][3]));
+			trainingSetFeatures[ri][10] = sqrt(calculateVar(trainingSetGyroY[ri],trainingSetFeatures[ri][4]));
+			trainingSetFeatures[ri][11] = sqrt(calculateVar(trainingSetGyroZ[ri],trainingSetFeatures[ri][5]));
+
+			trainingSetFeatures[ri][12] = calculateCorr(trainingSetAccelerationX[ri], trainingSetGyroX[ri], trainingSetFeatures[ri][0], trainingSetFeatures[ri][3], trainingSetFeatures[ri][6], trainingSetFeatures[ri][9]);
+			trainingSetFeatures[ri][13] = calculateCorr(trainingSetAccelerationY[ri], trainingSetGyroY[ri], trainingSetFeatures[ri][1], trainingSetFeatures[ri][4], trainingSetFeatures[ri][7], trainingSetFeatures[ri][10]);
+			trainingSetFeatures[ri][14] = calculateCorr(trainingSetAccelerationZ[ri], trainingSetGyroZ[ri], trainingSetFeatures[ri][2], trainingSetFeatures[ri][5], trainingSetFeatures[ri][8], trainingSetFeatures[ri][11]);
+		}
 	for(int c=0;c<nOfSamples;c++)
 	{
 		for(int ri = 0; ri<nOfFeatures; ri++)
@@ -118,27 +297,45 @@ int main(void)
 	//float sampleToClassify_direction[vectorLength] = { 4,21,6,6,18,10,9,61,12,11 };
 
 	//test
+	/*
 	float sampleToClassify_acceleration[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
 	float sampleToClassify_direction[vectorLength] = { 45,4,5,7,2,1,8,66,8,12 };
 
 	float sampleFeatures[nOfFeatures] = { 0 };
-	//feature extraction
+
 	sampleFeatures[0] = calculateMean(sampleToClassify_acceleration);
 	sampleFeatures[1] = calculateMean(sampleToClassify_direction);
 	sampleFeatures[2] = sqrt(calculateVar(sampleToClassify_acceleration, sampleFeatures[0]));
 	sampleFeatures[3] = sqrt(calculateVar(sampleToClassify_direction, sampleFeatures[1]));
 	sampleFeatures[4] = calculateCorr(sampleToClassify_acceleration, sampleToClassify_direction, sampleFeatures[0], sampleFeatures[1], sampleFeatures[2], sampleFeatures[3]);
+*/
+	float sampleToClassify_accelerationX[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
+	float sampleToClassify_accelerationY[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
+	float sampleToClassify_accelerationZ[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
 
-	//test per verificare che calculate distance funzioni
-	/*
-		float sampleFeatures2[nOfFeatures] = { 0 };
-		sampleFeatures2[0] = sampleFeatures[0];
-		sampleFeatures2[1] = sampleFeatures[1];
-		sampleFeatures2[2] = sampleFeatures[2];
-		sampleFeatures2[3] = 21;
-		sampleFeatures2[4] = sampleFeatures[4];
-		float d = calculateDistance(sampleFeatures, sampleFeatures2);
-	 */
+	float sampleToClassify_gyroX[vectorLength] = { 45,4,5,7,2,1,8,66,8,12 };
+	float sampleToClassify_gyroY[vectorLength] = { 45,4,5,7,2,1,8,66,8,12 };
+	float sampleToClassify_gyroZ[vectorLength] = { 45,4,5,7,2,1,8,66,8,12 };
+
+	float sampleFeatures[nOfFeatures] = { 0 };
+
+	sampleFeatures[0] = calculateMean(sampleToClassify_accelerationX);
+	sampleFeatures[1] = calculateMean(sampleToClassify_accelerationY);
+	sampleFeatures[2] = calculateMean(sampleToClassify_accelerationZ);
+	sampleFeatures[3] = calculateMean(sampleToClassify_gyroX);
+	sampleFeatures[4] = calculateMean(sampleToClassify_gyroY);
+	sampleFeatures[5] = calculateMean(sampleToClassify_gyroZ);
+
+	sampleFeatures[6] = sqrt(calculateVar(sampleToClassify_accelerationX, sampleFeatures[0]));
+	sampleFeatures[7] = sqrt(calculateVar(sampleToClassify_accelerationY, sampleFeatures[1]));
+	sampleFeatures[8] = sqrt(calculateVar(sampleToClassify_accelerationZ, sampleFeatures[2]));
+	sampleFeatures[9] = sqrt(calculateVar(sampleToClassify_accelerationX, sampleFeatures[0]));
+	sampleFeatures[10] = sqrt(calculateVar(sampleToClassify_accelerationY, sampleFeatures[1]));
+	sampleFeatures[11] = sqrt(calculateVar(sampleToClassify_accelerationZ, sampleFeatures[2]));
+
+	sampleFeatures[12] = calculateCorr(sampleToClassify_accelerationX, sampleToClassify_gyroX, sampleFeatures[0], sampleFeatures[3], sampleFeatures[6], sampleFeatures[9]);
+	sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
+	sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
 
 	int knn_index[nOfSamples] = { 0 };
 	for (int i = 0; i < nOfSamples; i++)
@@ -269,8 +466,7 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 		}
 		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-		HAL_Delay(10000);
-
+		HAL_Delay(250);
 	}
 }
 

@@ -65,18 +65,19 @@ void LSM6DS0_ReadAcceleration(float vect[])
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_H_G, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
 	int16_t dataX = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
 	X_acc = (float)dataX;
+	vect[0]=X_acc*acc_sensitivity/1000;
+
 	//*mH+(float)HTS221_H0_rHx2/2;
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_L_G, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_H_G, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
 	int16_t dataY = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
 	Y_acc = (float)dataY;
+	vect[1]=Y_acc*acc_sensitivity/1000;
 
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_L_G, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_H_G, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
 	int16_t dataZ = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
 	Z_acc = (float)dataZ;
-	vect[0]=X_acc*acc_sensitivity/1000;
-	vect[1]=Y_acc*acc_sensitivity/1000;
 	vect[2]=Z_acc*acc_sensitivity/1000;
 }
 void LSM6DS0_ReadGyro(float vect[])
@@ -85,23 +86,24 @@ void LSM6DS0_ReadGyro(float vect[])
 
 	uint8_t I2C_RxBuffer[I2C_RXBUFFERSIZE];
 	float X_gyr, Y_gyr, Z_gyr;
-float gyro_sensitivity =8.75;
+	float gyro_sensitivity =8.75;
+
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_L_XL, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_H_XL, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
 	int16_t dataX = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
 	X_gyr = (float)dataX;
+	vect[0]=X_gyr*gyro_sensitivity/1000;
 	//*mH+(float)HTS221_H0_rHx2/2;
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_L_XL, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_H_XL, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
 	int16_t dataY = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
 	Y_gyr = (float)dataY;
+	vect[1]=Y_gyr*gyro_sensitivity/1000;
 
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_L_XL, 1, (uint8_t *)&I2C_RxBuffer[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_H_XL, 1, (uint8_t *)&I2C_RxBuffer[1], 1, 10000);
 	int16_t dataZ = (((uint16_t)I2C_RxBuffer[1]<<8 | I2C_RxBuffer[0]));
 	Z_gyr = (float)dataZ;
-	vect[0]=X_gyr*gyro_sensitivity/1000;
-	vect[1]=Y_gyr*gyro_sensitivity/1000;
 	vect[2]=Z_gyr*gyro_sensitivity/1000;
 }
 

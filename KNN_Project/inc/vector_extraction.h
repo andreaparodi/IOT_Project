@@ -9,16 +9,16 @@
 #define VECTOR_EXTRACTION_H_
 
 //lunghezza dei vettori di sampling
-#define vectorLength 10
+//#define vectorLength 10
 //numero dei vettori di training
-#define nOfSamples 20
+//#define nOfSamples 20
 //numero di features che vengono estratte (media acc, media direz, devstand acc, devstand direz, correlaz acc/direz)
-#define nOfFeatures 5
+//#define nOfFeatures 5
 //numero di vicini considerati
-#define k 7
+//#define k 7
 
 #include "math.h"
-
+#include "main.h"
 /*
 float calculateMean(float vect[], int length);
 float calculateVar(float vect[], float mean, int length);
