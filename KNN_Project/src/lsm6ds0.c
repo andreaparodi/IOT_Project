@@ -7,7 +7,7 @@
 
 #include "lsm6ds0.h"
 
-uint8_t LSM6DS0_WhoAmI(void)
+uint8_t LSM6DS0_Who_Am_I(void)
 {
 	const uint8_t I2C_RXBUFFERSIZE = 1;
 	uint8_t I2C_RxBuffer[I2C_RXBUFFERSIZE];
@@ -19,8 +19,6 @@ uint8_t LSM6DS0_WhoAmI(void)
 
 	return I2C_RxBuffer[0];
 }
-
-
 void LSM6DS0_Config(uint8_t ctrl1g, uint8_t ctrl2g, uint8_t ctrl3g, uint8_t ctrl4, uint8_t ctrl5xl, uint8_t ctrl6xl, uint8_t ctrl7xl, uint8_t ctrl8, uint8_t ctrl9, uint8_t ctrl10, uint8_t orient_cfg)
 {
 	const uint8_t I2C_TXBUFFERSIZE = 11;

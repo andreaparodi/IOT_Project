@@ -4,6 +4,7 @@
 #include "knn.h"
 #include "i2c.h"
 #include "lsm6ds0.h"
+#include "usart.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -20,6 +21,9 @@
 #define k 7
 
 UART_HandleTypeDef huart2;
+UART_HandleTypeDef UARTHandle2;
+UART_HandleTypeDef printfPort;
+UART_HandleTypeDef UARTHandle1;
 
 //functions
 void MX_USART2_UART_Init(void);

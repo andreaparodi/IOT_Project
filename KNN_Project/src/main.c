@@ -13,9 +13,29 @@ int main(void)
 {
 
 	HAL_Init();
+	USART1_Init();
+	//USART2_Init();
 	MX_USART2_UART_Init();
+	//HAL_UART_MspInit(&huart2);
 	I2C1_init();
-	LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
+	//LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
+
+//uint8_t lsm = LSM6DS0_Who_Am_I();
+	if(LSM6DS0_Who_Am_I()==LSM6DS0_WHO_AM_I)
+	    {
+		LSM6DS0_present = ENABLE;
+	    char *msg="\n\rLSM6DS0 found on the I2C bus! \r\n";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+		LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
+	     //HTS221_Config(0x1B, 0x83, 0x01, 0x00);
+	     //HTS221_ReadCalib();
+	    }
+	    else
+	    {
+	    	char *msg="\n\rNOT FOUND \r\n";
+	    	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+	    	LSM6DS0_present = DISABLE;
+	    }
 
 	//#########PARTE NUOVA##########
 	char buffer[100];
@@ -384,10 +404,6 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-	//int a = 0;
-
-	LSM6DS0_ReadAcceleration(acceleration_data);
-	LSM6DS0_ReadGyro(gyro_data);
 
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	char *placeHolder = "Acc_X";
@@ -484,6 +500,7 @@ void MX_USART2_UART_Init(void)
 }
 //configurazione dei pin per comunicazione
 
+/*
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -495,7 +512,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		/**USART2 GPIO Configuration
     PA2     ------> USART2_TX
     PA3     ------> USART2_RX
-		 */
+
 		GPIO_InitStruct.Pin = GPIO_PIN_2|GPIO_PIN_3;
 		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
 		GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -504,3 +521,4 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
 }
+*/
