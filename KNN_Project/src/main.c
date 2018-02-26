@@ -18,13 +18,9 @@ int main(void)
 	I2C1_init();
 	//LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
 
-//uint8_t lsm = LSM6DS0_Who_Am_I();
-	HandleSelect(1);
-
 	if(LSM6DS0_Who_Am_I()==LSM6DS0_WHO_AM_I)
 	    {
 		LSM6DS0_present = ENABLE;
-		//HandleSelect(2);
 	    char *msg="\n\rLSM6DS0 found on the I2C bus! \r\n";
 		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
 		LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);

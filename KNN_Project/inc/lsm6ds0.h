@@ -54,7 +54,7 @@ void	LSM6DS0_ReadCalib(void);
 #define INT_CTRL 0x0C
 */
 
- #define LSM6DS0_add			0x5D // nel datasheet non fa riferimento a nessun 0x5F sia per l'hts221 che per questo quindi dovrebbe essere un registro temp
+ #define LSM6DS0_add			0x80 // nel datasheet non fa riferimento a nessun 0x5F sia per l'hts221 che per questo quindi dovrebbe essere un registro temp
 
 #define LSM6DS0_REFERENCE_G  	0x0B
  #define LSM6DS0_WHO_AM_I  		0x0F
