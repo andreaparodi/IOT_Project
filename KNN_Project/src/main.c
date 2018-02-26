@@ -14,16 +14,17 @@ int main(void)
 
 	HAL_Init();
 	USART1_Init();
-	//USART2_Init();
 	MX_USART2_UART_Init();
-	//HAL_UART_MspInit(&huart2);
 	I2C1_init();
 	//LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
 
 //uint8_t lsm = LSM6DS0_Who_Am_I();
+	HandleSelect(1);
+
 	if(LSM6DS0_Who_Am_I()==LSM6DS0_WHO_AM_I)
 	    {
 		LSM6DS0_present = ENABLE;
+		//HandleSelect(2);
 	    char *msg="\n\rLSM6DS0 found on the I2C bus! \r\n";
 		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
 		LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
@@ -485,7 +486,7 @@ int main(void)
 		HAL_Delay(250);
 	}
 }
-
+/*
 //inizializzazione della seriale
 void MX_USART2_UART_Init(void)
 {
@@ -498,6 +499,7 @@ void MX_USART2_UART_Init(void)
 	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
 	HAL_UART_Init(&huart2);
 }
+*/
 //configurazione dei pin per comunicazione
 
 /*

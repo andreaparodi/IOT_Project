@@ -13,7 +13,8 @@
 #include "stm32f4xx_nucleo.h"
 
 void USART1_Init();
-void USART2_Init();
+//void USART2_Init();
+void MX_USART2_UART_Init(void);
 void HAL_UART_MspInit();
 void HAL_UART_MspDeInit();
 UART_HandleTypeDef HandleSelect(int portNum);
