@@ -70,12 +70,12 @@ void LSM6DS0_ReadAcceleration(float vect[])
 	char buffer[100];
 	char *tab = "\t";
 	char *newline = "\n\r";
-
+/*
 	snprintf(buffer, sizeof buffer, "%d", I2C_RxBufferX[0]);
 	HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-
+*/
 
 	//*mH+(float)HTS221_H0_rHx2/2;
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_L_G, 1, (uint8_t *)&I2C_RxBufferY[0], 1, 10000);

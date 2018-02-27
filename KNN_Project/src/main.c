@@ -16,7 +16,6 @@ int main(void)
 	USART1_Init();
 	MX_USART2_UART_Init();
 	I2C1_init();
-	//LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
 
 	if(LSM6DS0_Who_Am_I()==LSM6DS0_Who_am_i_val)
 	{
@@ -24,8 +23,6 @@ int main(void)
 		char *msg="\n\rLSM6DS0 found on the I2C bus! \r\n";
 		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
 		LSM6DS0_Config();
-		//HTS221_Config(0x1B, 0x83, 0x01, 0x00);
-		//HTS221_ReadCalib();
 	}
 	else
 	{
@@ -239,7 +236,6 @@ int main(void)
 	// 0: appartenenza a "classe1"
 	// 1: appartenenza a "classe2"
 	int trainingLabels[nOfSamples] = {1,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0};
-
 	float trainingSetFeatures[nOfSamples][nOfFeatures];
 	/*
 		indici trainingFeatures:
@@ -302,7 +298,7 @@ int main(void)
 		trainingSetFeatures[ri][13] = calculateCorr(trainingSetAccelerationY[ri], trainingSetGyroY[ri], trainingSetFeatures[ri][1], trainingSetFeatures[ri][4], trainingSetFeatures[ri][7], trainingSetFeatures[ri][10]);
 		trainingSetFeatures[ri][14] = calculateCorr(trainingSetAccelerationZ[ri], trainingSetGyroZ[ri], trainingSetFeatures[ri][2], trainingSetFeatures[ri][5], trainingSetFeatures[ri][8], trainingSetFeatures[ri][11]);
 	}
-	/*
+
 	for(int c=0;c<nOfSamples;c++)
 	{
 		for(int ri = 0; ri<nOfFeatures; ri++)
@@ -313,7 +309,7 @@ int main(void)
 		}
 		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	}
-*/
+
 	//float sampleToClassify_acceleration[vectorLength] = { 35,1,2,3,66,0,12,6,18,1 };
 	//float sampleToClassify_direction[vectorLength] = { 4,21,6,6,18,10,9,61,12,11 };
 
@@ -366,7 +362,7 @@ int main(void)
 	//ordina gli indici contenuti in knn_index in maniera crescente rispetto alla distanza, in maniera da mantenere un
 	//riferimento al rispettivo vettore di training
 	findKNN(trainingSetFeatures, knn_index, sampleFeatures);
-/*
+
 	for(int i = 0; i<nOfSamples;i++)
 	{
 		snprintf(buffer, sizeof buffer, "%d", knn_index[i]);
@@ -383,7 +379,7 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	}
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-*/
+
 	//sfrutta gli indici ordinati e va a vedere il rispettivo valore di essi per capire la classe del vettore sampleToClassify
 	int sampleLabel = classificate(trainingLabels, knn_index);
 
@@ -396,7 +392,7 @@ int main(void)
 	{
 		class="classe 2\t\t";
 	}
-/*
+
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
@@ -427,40 +423,21 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-*/
-	//#########FINE PARTE NUOVA#####
 
 	for(;;)
 	{
-		/*
-		 snprintf(buffer, sizeof buffer, "%d", varianza1);
+/*
+		for(int i = 0; i<nOfSamples;i++)
+		{
+			snprintf(buffer, sizeof buffer, "%d", knn_index[i]);
 			HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-		 */
-
-		//HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(c1), 0xFFFF);
-		//HAL_Delay(100);
-
-		//snprintf(buffer, sizeof buffer, "%d", sampleLabel);
-		//HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-		/*
-					for(int i = 0; i<nOfSamples;i++)
-					{
-						snprintf(buffer, sizeof buffer, "%d", knn_index[i]);
-						HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-						HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
-					}
-					HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-		 */
-		/*
-		HAL_UART_Transmit(&huart2, (uint8_t*)c1, strlen(c1), 0xFFFF);
-			HAL_Delay(100);
-			HAL_UART_Transmit(&huart2, (uint8_t*)c2, strlen(c2), 0xFFFF);
-			HAL_Delay(100);
-			HAL_UART_Transmit(&huart2, (uint8_t*)c3, strlen(c3), 0xFFFF);
-		 */
+			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+		}
+		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+*/
 		LSM6DS0_ReadAcceleration(acceleration_data);
 		LSM6DS0_ReadGyro(gyro_data);
-/*
+
 		for(int i = 0; i<3;i++)
 		{
 			snprintf(buffer, sizeof buffer, "%f", acceleration_data[i]);
@@ -474,7 +451,7 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 		}
 		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-	*/
+
 		HAL_Delay(1000);
 
 
