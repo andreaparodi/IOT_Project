@@ -90,7 +90,7 @@ void	LSM6DS0_ReadCalib(void);
  //Definizione variabili di uscita/di conversione/ecc.. ->
  //
 
- void LSM6DS0_Config(uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t, uint8_t); //Chiedere Ansovini per registri
+ void LSM6DS0_Config(); //Chiedere Ansovini per registri
  uint8_t LSM6DS0_Who_Am_I(void);
 void LSM6DS0_ReadAcceleration(float vect[]);
 void LSM6DS0_ReadGyro(float vect[]);

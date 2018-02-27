@@ -24,7 +24,6 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef UARTHandle2;
 UART_HandleTypeDef printfPort;
 UART_HandleTypeDef UARTHandle1;
-
 //functions
 //void MX_USART2_UART_Init(void);
 #endif /* MAIN_H_ */

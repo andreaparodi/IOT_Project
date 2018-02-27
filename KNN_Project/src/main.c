@@ -19,168 +19,170 @@ int main(void)
 	//LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
 
 	if(LSM6DS0_Who_Am_I()==LSM6DS0_WHO_AM_I)
-	    {
+	{
 		LSM6DS0_present = ENABLE;
-	    char *msg="\n\rLSM6DS0 found on the I2C bus! \r\n";
+		char *msg="\n\rLSM6DS0 found on the I2C bus! \r\n";
 		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
-		LSM6DS0_Config(0x40, 0x00, 0x40, 0x38,0x38,0x40,0x00,0x04,0x00,0x00,0x00);
-	     //HTS221_Config(0x1B, 0x83, 0x01, 0x00);
-	     //HTS221_ReadCalib();
-	    }
-	    else
-	    {
-	    	char *msg="\n\rNOT FOUND \r\n";
-	    	HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
-	    	LSM6DS0_present = DISABLE;
-	    }
+		LSM6DS0_Config();
+		//HTS221_Config(0x1B, 0x83, 0x01, 0x00);
+		//HTS221_ReadCalib();
+	}
+	else
+	{
+		char *msg="\n\rNOT FOUND \r\n";
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+		LSM6DS0_present = DISABLE;
+	}
 
 	//#########PARTE NUOVA##########
 	char buffer[100];
 	char *newline = "\n\r";
 	char *tab = "\t";
 
+	int cycleNum=0;
+
 	float acceleration_data[3]={0};
 	float gyro_data[3]={0};
 
 	float trainingSetAccelerationX[nOfSamples][vectorLength]=
 	{
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 }
-};
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 }
+	};
 	float trainingSetAccelerationY[nOfSamples][vectorLength]=
 	{
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 }
-};
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 }
+	};
 	float trainingSetAccelerationZ[nOfSamples][vectorLength]=
 	{
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 }
-};
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 }
+	};
 	float trainingSetGyroX[nOfSamples][vectorLength]=
 	{
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 }
-};
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 }
+	};
 	float trainingSetGyroY[nOfSamples][vectorLength]=
 	{
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 }
-};
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 }
+	};
 	float trainingSetGyroZ[nOfSamples][vectorLength]=
 	{
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 },
-		{ 45,4,5,7,2,1,8,66,8,12 }
-};
-/*
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 },
+			{ 45,4,5,7,2,1,8,66,8,12 }
+	};
+	/*
 	float trainingSetAcceleration[nOfSamples][vectorLength] =
 	{
 			{ 98,97,102,124,135,100,89,126,89,122 },
@@ -229,7 +231,7 @@ int main(void)
 			{ 45,4,5,7,2,1,8,66,8,12 },
 			{ 45,4,5,7,2,1,8,66,8,12 }
 	};
-*/
+	 */
 
 
 	//etichette del training set (note)
@@ -258,7 +260,7 @@ int main(void)
 		trainingSetFeatures[ri][3] = sqrt(calculateVar(trainingSetDirection[ri], trainingSetFeatures[ri][1]));
 		trainingSetFeatures[ri][4] = calculateCorr(trainingSetAcceleration[ri], trainingSetDirection[ri], trainingSetFeatures[ri][0], trainingSetFeatures[ri][1], trainingSetFeatures[ri][2], trainingSetFeatures[ri][3]);
 	}
-	*/
+	 */
 	/*
 	  indici trainingFeatures:
 	  0		media accelerazione x
@@ -278,27 +280,27 @@ int main(void)
 	  14	corr z
 	 */
 	for (int ri = 0; ri < nOfSamples; ri++)
-		{
-			trainingSetFeatures[ri][0] = calculateMean(trainingSetAccelerationX[ri]);
-			trainingSetFeatures[ri][1] = calculateMean(trainingSetAccelerationY[ri]);
-			trainingSetFeatures[ri][2] = calculateMean(trainingSetAccelerationZ[ri]);
+	{
+		trainingSetFeatures[ri][0] = calculateMean(trainingSetAccelerationX[ri]);
+		trainingSetFeatures[ri][1] = calculateMean(trainingSetAccelerationY[ri]);
+		trainingSetFeatures[ri][2] = calculateMean(trainingSetAccelerationZ[ri]);
 
-			trainingSetFeatures[ri][3] = calculateMean(trainingSetGyroX[ri]);
-			trainingSetFeatures[ri][4] = calculateMean(trainingSetGyroY[ri]);
-			trainingSetFeatures[ri][5] = calculateMean(trainingSetGyroZ[ri]);
+		trainingSetFeatures[ri][3] = calculateMean(trainingSetGyroX[ri]);
+		trainingSetFeatures[ri][4] = calculateMean(trainingSetGyroY[ri]);
+		trainingSetFeatures[ri][5] = calculateMean(trainingSetGyroZ[ri]);
 
-			trainingSetFeatures[ri][6] = sqrt(calculateVar(trainingSetAccelerationX[ri],trainingSetFeatures[ri][0]));
-			trainingSetFeatures[ri][7] = sqrt(calculateVar(trainingSetAccelerationY[ri],trainingSetFeatures[ri][1]));
-			trainingSetFeatures[ri][8] = sqrt(calculateVar(trainingSetAccelerationZ[ri],trainingSetFeatures[ri][2]));
+		trainingSetFeatures[ri][6] = sqrt(calculateVar(trainingSetAccelerationX[ri],trainingSetFeatures[ri][0]));
+		trainingSetFeatures[ri][7] = sqrt(calculateVar(trainingSetAccelerationY[ri],trainingSetFeatures[ri][1]));
+		trainingSetFeatures[ri][8] = sqrt(calculateVar(trainingSetAccelerationZ[ri],trainingSetFeatures[ri][2]));
 
-			trainingSetFeatures[ri][9] = sqrt(calculateVar(trainingSetGyroX[ri],trainingSetFeatures[ri][3]));
-			trainingSetFeatures[ri][10] = sqrt(calculateVar(trainingSetGyroY[ri],trainingSetFeatures[ri][4]));
-			trainingSetFeatures[ri][11] = sqrt(calculateVar(trainingSetGyroZ[ri],trainingSetFeatures[ri][5]));
+		trainingSetFeatures[ri][9] = sqrt(calculateVar(trainingSetGyroX[ri],trainingSetFeatures[ri][3]));
+		trainingSetFeatures[ri][10] = sqrt(calculateVar(trainingSetGyroY[ri],trainingSetFeatures[ri][4]));
+		trainingSetFeatures[ri][11] = sqrt(calculateVar(trainingSetGyroZ[ri],trainingSetFeatures[ri][5]));
 
-			trainingSetFeatures[ri][12] = calculateCorr(trainingSetAccelerationX[ri], trainingSetGyroX[ri], trainingSetFeatures[ri][0], trainingSetFeatures[ri][3], trainingSetFeatures[ri][6], trainingSetFeatures[ri][9]);
-			trainingSetFeatures[ri][13] = calculateCorr(trainingSetAccelerationY[ri], trainingSetGyroY[ri], trainingSetFeatures[ri][1], trainingSetFeatures[ri][4], trainingSetFeatures[ri][7], trainingSetFeatures[ri][10]);
-			trainingSetFeatures[ri][14] = calculateCorr(trainingSetAccelerationZ[ri], trainingSetGyroZ[ri], trainingSetFeatures[ri][2], trainingSetFeatures[ri][5], trainingSetFeatures[ri][8], trainingSetFeatures[ri][11]);
-		}
+		trainingSetFeatures[ri][12] = calculateCorr(trainingSetAccelerationX[ri], trainingSetGyroX[ri], trainingSetFeatures[ri][0], trainingSetFeatures[ri][3], trainingSetFeatures[ri][6], trainingSetFeatures[ri][9]);
+		trainingSetFeatures[ri][13] = calculateCorr(trainingSetAccelerationY[ri], trainingSetGyroY[ri], trainingSetFeatures[ri][1], trainingSetFeatures[ri][4], trainingSetFeatures[ri][7], trainingSetFeatures[ri][10]);
+		trainingSetFeatures[ri][14] = calculateCorr(trainingSetAccelerationZ[ri], trainingSetGyroZ[ri], trainingSetFeatures[ri][2], trainingSetFeatures[ri][5], trainingSetFeatures[ri][8], trainingSetFeatures[ri][11]);
+	}
 	for(int c=0;c<nOfSamples;c++)
 	{
 		for(int ri = 0; ri<nOfFeatures; ri++)
@@ -325,7 +327,7 @@ int main(void)
 	sampleFeatures[2] = sqrt(calculateVar(sampleToClassify_acceleration, sampleFeatures[0]));
 	sampleFeatures[3] = sqrt(calculateVar(sampleToClassify_direction, sampleFeatures[1]));
 	sampleFeatures[4] = calculateCorr(sampleToClassify_acceleration, sampleToClassify_direction, sampleFeatures[0], sampleFeatures[1], sampleFeatures[2], sampleFeatures[3]);
-*/
+	 */
 	float sampleToClassify_accelerationX[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
 	float sampleToClassify_accelerationY[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
 	float sampleToClassify_accelerationZ[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
@@ -363,12 +365,6 @@ int main(void)
 	//riferimento al rispettivo vettore di training
 	findKNN(trainingSetFeatures, knn_index, sampleFeatures);
 
-	//char *newline = "\n\r\r";
-	//char *tab = "\t";
-
-	//char test[100];
-	//char buffer[100];
-
 	for(int i = 0; i<nOfSamples;i++)
 	{
 		snprintf(buffer, sizeof buffer, "%d", knn_index[i]);
@@ -398,6 +394,7 @@ int main(void)
 	{
 		class="classe 2\t\t";
 	}
+
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
@@ -431,11 +428,6 @@ int main(void)
 
 	//#########FINE PARTE NUOVA#####
 
-	//char *c1 = "Acceleration\t\t";
-	//char *c2 = "Speed\t\t";
-	//char *c3 = "Direction\r\n";
-	//int prova = 124;
-
 	for(;;)
 	{
 		/*
@@ -466,6 +458,7 @@ int main(void)
 		 */
 		LSM6DS0_ReadAcceleration(acceleration_data);
 		LSM6DS0_ReadGyro(gyro_data);
+
 		for(int i = 0; i<3;i++)
 		{
 			snprintf(buffer, sizeof buffer, "%f", acceleration_data[i]);
@@ -479,6 +472,63 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 		}
 		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+
+/*
+		if(cycleNum<vectorLength)
+		{
+			sampleToClassify_accelerationX[cycleNum] = acceleration_data[0];
+			sampleToClassify_accelerationY[cycleNum] = acceleration_data[1];
+			sampleToClassify_accelerationZ[cycleNum] = acceleration_data[2];
+
+			sampleToClassify_gyroX[cycleNum] = gyro_data[0];
+			sampleToClassify_gyroY[cycleNum] = gyro_data[1];
+			sampleToClassify_gyroZ[cycleNum] = gyro_data[2];
+
+			cycleNum++;
+		}
+		else
+		{
+			sampleFeatures[0] = calculateMean(sampleToClassify_accelerationX);
+			sampleFeatures[1] = calculateMean(sampleToClassify_accelerationY);
+			sampleFeatures[2] = calculateMean(sampleToClassify_accelerationZ);
+			sampleFeatures[3] = calculateMean(sampleToClassify_gyroX);
+			sampleFeatures[4] = calculateMean(sampleToClassify_gyroY);
+			sampleFeatures[5] = calculateMean(sampleToClassify_gyroZ);
+
+			sampleFeatures[6] = sqrt(calculateVar(sampleToClassify_accelerationX, sampleFeatures[0]));
+			sampleFeatures[7] = sqrt(calculateVar(sampleToClassify_accelerationY, sampleFeatures[1]));
+			sampleFeatures[8] = sqrt(calculateVar(sampleToClassify_accelerationZ, sampleFeatures[2]));
+			sampleFeatures[9] = sqrt(calculateVar(sampleToClassify_accelerationX, sampleFeatures[0]));
+			sampleFeatures[10] = sqrt(calculateVar(sampleToClassify_accelerationY, sampleFeatures[1]));
+			sampleFeatures[11] = sqrt(calculateVar(sampleToClassify_accelerationZ, sampleFeatures[2]));
+
+			sampleFeatures[12] = calculateCorr(sampleToClassify_accelerationX, sampleToClassify_gyroX, sampleFeatures[0], sampleFeatures[3], sampleFeatures[6], sampleFeatures[9]);
+			sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
+			sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
+
+			for (int i = 0; i < nOfSamples; i++)
+			{
+				knn_index[i] = i;
+			}
+			findKNN(trainingSetFeatures, knn_index, sampleFeatures);
+			sampleLabel = classificate(trainingLabels, knn_index);
+			class="";
+			if (sampleLabel == 0)
+			{
+				class="classe 1\t\t";
+			}
+			else
+			{
+				class="classe 2\t\t";
+			}
+
+			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+			HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
+			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+
+			cycleNum=0;
+			*/
+		}
 		HAL_Delay(250);
 	}
 }
@@ -495,7 +545,7 @@ void MX_USART2_UART_Init(void)
 	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
 	HAL_UART_Init(&huart2);
 }
-*/
+ */
 //configurazione dei pin per comunicazione
 
 /*
@@ -519,4 +569,4 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
 }
-*/
+ */
