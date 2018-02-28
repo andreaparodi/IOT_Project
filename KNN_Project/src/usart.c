@@ -31,36 +31,6 @@ void MX_USART2_UART_Init(void)
 	huart2.Init.HwFlowCtl 			= UART_HWCONTROL_NONE;
 	HAL_UART_Init(&huart2);
 }
-/*
-void USART2_Init()
-{
-	UARTHandle2.Instance			=USART2;
-	UARTHandle2.Init.BaudRate		=115200;
-	UARTHandle2.Init.WordLength		=UART_WORDLENGTH_8B;
-	UARTHandle2.Init.StopBits		=UART_STOPBITS_1;
-	UARTHandle2.Init.Parity			=UART_PARITY_NONE;
-	UARTHandle2.Init.HwFlowCtl		=UART_HWCONTROL_NONE;
-	UARTHandle2.Init.Mode			=UART_MODE_TX_RX;
-	UARTHandle2.Init.OverSampling	=UART_OVERSAMPLING_16;
-
-	HAL_UART_Init(&UARTHandle2);
-}
- */
-UART_HandleTypeDef HandleSelect(int portNum)
-{
-	switch(portNum)
-	{
-	case 1:
-		printfPort = UARTHandle1;
-		break;
-	case 2:
-		printfPort = huart2;
-		break;
-	default:
-	break;
-	}
-	return printfPort;
-};
 void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;

@@ -11,7 +11,7 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-//lunghezza dei vettori di sampling
+//elementi di ogni vettore di training o di sample
 #define vectorLength 10
 //numero dei vettori di training
 #define nOfSamples 20
@@ -19,11 +19,12 @@
 #define nOfFeatures 15
 //numero di vicini considerati
 #define k 7
+//numero di campionamenti in un secondo
+#define samplePerSecond 10
 
 UART_HandleTypeDef huart2;
 UART_HandleTypeDef UARTHandle2;
 UART_HandleTypeDef printfPort;
 UART_HandleTypeDef UARTHandle1;
-//functions
-//void MX_USART2_UART_Init(void);
+
 #endif /* MAIN_H_ */

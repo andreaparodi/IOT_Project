@@ -11,7 +11,6 @@
 
 int main(void)
 {
-
 	HAL_Init();
 	USART1_Init();
 	MX_USART2_UART_Init();
@@ -31,7 +30,6 @@ int main(void)
 		LSM6DS0_present = DISABLE;
 	}
 
-	//#########PARTE NUOVA##########
 	char buffer[100];
 	char *newline = "\n\r";
 	char *tab = "\t";
@@ -179,57 +177,6 @@ int main(void)
 			{ 45,4,5,7,2,1,8,66,8,12 },
 			{ 45,4,5,7,2,1,8,66,8,12 }
 	};
-	/*
-	float trainingSetAcceleration[nOfSamples][vectorLength] =
-	{
-			{ 98,97,102,124,135,100,89,126,89,122 },
-			{ 99,102,100,101,99,135,98,90,88,121 },
-			{ 105,89,105,107,102,111,86,126,98,125 },
-			{ 4,4,4,4,4,5,4,4,4,4 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 97,101,102,99,87,107,89,123,89,127 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 }
-	};
-
-
-	float trainingSetDirection[nOfSamples][vectorLength]=
-	{
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 },
-			{ 45,4,5,7,2,1,8,66,8,12 }
-	};
-	 */
-
 
 	//etichette del training set (note)
 	//
@@ -298,7 +245,7 @@ int main(void)
 		trainingSetFeatures[ri][13] = calculateCorr(trainingSetAccelerationY[ri], trainingSetGyroY[ri], trainingSetFeatures[ri][1], trainingSetFeatures[ri][4], trainingSetFeatures[ri][7], trainingSetFeatures[ri][10]);
 		trainingSetFeatures[ri][14] = calculateCorr(trainingSetAccelerationZ[ri], trainingSetGyroZ[ri], trainingSetFeatures[ri][2], trainingSetFeatures[ri][5], trainingSetFeatures[ri][8], trainingSetFeatures[ri][11]);
 	}
-
+	/*
 	for(int c=0;c<nOfSamples;c++)
 	{
 		for(int ri = 0; ri<nOfFeatures; ri++)
@@ -309,7 +256,7 @@ int main(void)
 		}
 		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	}
-
+	 */
 	//float sampleToClassify_acceleration[vectorLength] = { 35,1,2,3,66,0,12,6,18,1 };
 	//float sampleToClassify_direction[vectorLength] = { 4,21,6,6,18,10,9,61,12,11 };
 
@@ -326,6 +273,7 @@ int main(void)
 	sampleFeatures[3] = sqrt(calculateVar(sampleToClassify_direction, sampleFeatures[1]));
 	sampleFeatures[4] = calculateCorr(sampleToClassify_acceleration, sampleToClassify_direction, sampleFeatures[0], sampleFeatures[1], sampleFeatures[2], sampleFeatures[3]);
 	 */
+	/*
 	float sampleToClassify_accelerationX[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
 	float sampleToClassify_accelerationY[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
 	float sampleToClassify_accelerationZ[vectorLength] = { 106,94,105,117,92,111,98,126,98,112 };
@@ -335,7 +283,19 @@ int main(void)
 	float sampleToClassify_gyroZ[vectorLength] = { 45,4,5,7,2,1,8,66,8,12 };
 
 	float sampleFeatures[nOfFeatures] = { 0 };
+	 */
 
+	float sampleToClassify_accelerationX[vectorLength] = { 0 };
+	float sampleToClassify_accelerationY[vectorLength] = { 0 };
+	float sampleToClassify_accelerationZ[vectorLength] = { 0 };
+
+	float sampleToClassify_gyroX[vectorLength] = { 0 };
+	float sampleToClassify_gyroY[vectorLength] = { 0 };
+	float sampleToClassify_gyroZ[vectorLength] = { 0 };
+
+	float sampleFeatures[nOfFeatures] = { 0 };
+
+	/*
 	sampleFeatures[0] = calculateMean(sampleToClassify_accelerationX);
 	sampleFeatures[1] = calculateMean(sampleToClassify_accelerationY);
 	sampleFeatures[2] = calculateMean(sampleToClassify_accelerationZ);
@@ -353,7 +313,7 @@ int main(void)
 	sampleFeatures[12] = calculateCorr(sampleToClassify_accelerationX, sampleToClassify_gyroX, sampleFeatures[0], sampleFeatures[3], sampleFeatures[6], sampleFeatures[9]);
 	sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
 	sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
-
+	 */
 	int knn_index[nOfSamples] = { 0 };
 	for (int i = 0; i < nOfSamples; i++)
 	{
@@ -361,8 +321,10 @@ int main(void)
 	}
 	//ordina gli indici contenuti in knn_index in maniera crescente rispetto alla distanza, in maniera da mantenere un
 	//riferimento al rispettivo vettore di training
+	/*
 	findKNN(trainingSetFeatures, knn_index, sampleFeatures);
-
+	 */
+	/*
 	for(int i = 0; i<nOfSamples;i++)
 	{
 		snprintf(buffer, sizeof buffer, "%d", knn_index[i]);
@@ -379,11 +341,12 @@ int main(void)
 		HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	}
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-
+	 */
 	//sfrutta gli indici ordinati e va a vedere il rispettivo valore di essi per capire la classe del vettore sampleToClassify
-	int sampleLabel = classificate(trainingLabels, knn_index);
+	//int sampleLabel = classificate(trainingLabels, knn_index);
 
 	char *class="";
+	/*
 	if (sampleLabel == 0)
 	{
 		class="classe 1\t\t";
@@ -396,7 +359,8 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-
+	 */
+	/*
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	char *placeHolder = "Acc_X";
 	HAL_UART_Transmit(&huart2, (uint8_t*)placeHolder, strlen(placeHolder), 0xFFFF);
@@ -423,10 +387,10 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-
+	 */
 	for(;;)
 	{
-/*
+		/*
 		for(int i = 0; i<nOfSamples;i++)
 		{
 			snprintf(buffer, sizeof buffer, "%d", knn_index[i]);
@@ -434,10 +398,10 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 		}
 		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-*/
+		 */
 		LSM6DS0_ReadAcceleration(acceleration_data);
 		LSM6DS0_ReadGyro(gyro_data);
-
+		/*
 		for(int i = 0; i<3;i++)
 		{
 			snprintf(buffer, sizeof buffer, "%f", acceleration_data[i]);
@@ -451,11 +415,8 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 		}
 		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+		 */
 
-		HAL_Delay(1000);
-
-
-		/*
 		if(cycleNum<vectorLength)
 		{
 			sampleToClassify_accelerationX[cycleNum] = acceleration_data[0];
@@ -470,6 +431,8 @@ int main(void)
 		}
 		else
 		{
+			cycleNum=0;
+
 			sampleFeatures[0] = calculateMean(sampleToClassify_accelerationX);
 			sampleFeatures[1] = calculateMean(sampleToClassify_accelerationY);
 			sampleFeatures[2] = calculateMean(sampleToClassify_accelerationZ);
@@ -488,6 +451,15 @@ int main(void)
 			sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
 			sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
 
+					for(int ri = 0; ri<nOfFeatures; ri++)
+					{
+						snprintf(buffer, sizeof buffer, "%f", sampleFeatures[ri]);
+						HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+						HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+					}
+					HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+
+			/*
 			for (int i = 0; i < nOfSamples; i++)
 			{
 				knn_index[i] = i;
@@ -507,13 +479,12 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 			HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-
-			cycleNum=0;
-		 */
+			 */
+		}
+		HAL_Delay(250);
 	}
 }
-
-/*
+	/*
 //inizializzazione della seriale
 void MX_USART2_UART_Init(void)
 {
@@ -526,10 +497,10 @@ void MX_USART2_UART_Init(void)
 	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
 	HAL_UART_Init(&huart2);
 }
- */
-//configurazione dei pin per comunicazione
+	 */
+	//configurazione dei pin per comunicazione
 
-/*
+	/*
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -550,4 +521,4 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
 }
- */
+	 */

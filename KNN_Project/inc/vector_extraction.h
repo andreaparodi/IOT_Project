@@ -8,22 +8,10 @@
 #ifndef VECTOR_EXTRACTION_H_
 #define VECTOR_EXTRACTION_H_
 
-//lunghezza dei vettori di sampling
-//#define vectorLength 10
-//numero dei vettori di training
-//#define nOfSamples 20
-//numero di features che vengono estratte (media acc, media direz, devstand acc, devstand direz, correlaz acc/direz)
-//#define nOfFeatures 5
-//numero di vicini considerati
-//#define k 7
-
 #include "math.h"
 #include "main.h"
-/*
-float calculateMean(float vect[], int length);
-float calculateVar(float vect[], float mean, int length);
-float calculateCor(float vect[]);
-*/
+
+#define cutoff_correlation 0.1
 
 float calculateMean(float vect[]);
 float calculateVar(float vect[], float mean);
