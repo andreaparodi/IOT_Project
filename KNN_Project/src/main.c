@@ -481,7 +481,7 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 			 */
 		}
-		HAL_Delay(250);
+		HAL_Delay(sampleTime);
 	}
 }
 	/*

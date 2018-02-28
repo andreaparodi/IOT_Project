@@ -12,7 +12,7 @@
 #define MAIN_H_
 
 //elementi di ogni vettore di training o di sample
-#define vectorLength 10
+#define vectorLength 50
 //numero dei vettori di training
 #define nOfSamples 20
 //numero di features che vengono estratte (media acc, media direz, devstand acc, devstand direz, correlaz acc/direz)
@@ -20,11 +20,9 @@
 //numero di vicini considerati
 #define k 7
 //numero di campionamenti in un secondo
-#define samplePerSecond 10
+#define sampleTime 100
 
 UART_HandleTypeDef huart2;
-UART_HandleTypeDef UARTHandle2;
-UART_HandleTypeDef printfPort;
 UART_HandleTypeDef UARTHandle1;
 
 #endif /* MAIN_H_ */
