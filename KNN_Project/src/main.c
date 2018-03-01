@@ -388,6 +388,17 @@ int main(void)
 	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 	 */
+	/*
+	int vettnum=0;
+	char *sep = "#############";
+	char *vet= "SAMPLE:";
+	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)vet, strlen(vet), 0xFFFF);
+	snprintf(buffer, sizeof buffer, "%d", vettnum);
+	HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)sep, strlen(sep), 0xFFFF);
+	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+	*/
 	for(;;)
 	{
 		/*
@@ -401,6 +412,7 @@ int main(void)
 		 */
 		LSM6DS0_ReadAcceleration(acceleration_data);
 		LSM6DS0_ReadGyro(gyro_data);
+
 		/*
 		for(int i = 0; i<3;i++)
 		{
@@ -422,17 +434,32 @@ int main(void)
 			sampleToClassify_accelerationX[cycleNum] = acceleration_data[0];
 			sampleToClassify_accelerationY[cycleNum] = acceleration_data[1];
 			sampleToClassify_accelerationZ[cycleNum] = acceleration_data[2];
-
+/*
+			for(int i = 0; i<3;i++)
+			{
+				snprintf(buffer, sizeof buffer, "%f", acceleration_data[i]);
+				HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+				HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+			}
+*/
 			sampleToClassify_gyroX[cycleNum] = gyro_data[0];
 			sampleToClassify_gyroY[cycleNum] = gyro_data[1];
 			sampleToClassify_gyroZ[cycleNum] = gyro_data[2];
-
+	/*
+			for(int i = 0; i<3;i++)
+			{
+				snprintf(buffer, sizeof buffer, "%f", gyro_data[i]);
+				HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+				HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+			}
+			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+*/
 			cycleNum++;
 		}
 		else
 		{
 			cycleNum=0;
-
+			//vettnum++;
 			sampleFeatures[0] = calculateMean(sampleToClassify_accelerationX);
 			sampleFeatures[1] = calculateMean(sampleToClassify_accelerationY);
 			sampleFeatures[2] = calculateMean(sampleToClassify_accelerationZ);
@@ -451,14 +478,21 @@ int main(void)
 			sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
 			sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
 
-					for(int ri = 0; ri<nOfFeatures; ri++)
-					{
-						snprintf(buffer, sizeof buffer, "%f", sampleFeatures[ri]);
-						HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-						HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
-					}
-					HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-
+			for(int ri = 0; ri<nOfFeatures; ri++)
+			{
+				snprintf(buffer, sizeof buffer, "%f", sampleFeatures[ri]);
+				HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+				HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+			}
+			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+			/*
+			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+			HAL_UART_Transmit(&huart2, (uint8_t*)vet, strlen(vet), 0xFFFF);
+			snprintf(buffer, sizeof buffer, "%d", vettnum);
+			HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
+			HAL_UART_Transmit(&huart2, (uint8_t*)sep, strlen(sep), 0xFFFF);
+			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
+			*/
 			/*
 			for (int i = 0; i < nOfSamples; i++)
 			{
@@ -484,7 +518,7 @@ int main(void)
 		HAL_Delay(sampleTime);
 	}
 }
-	/*
+/*
 //inizializzazione della seriale
 void MX_USART2_UART_Init(void)
 {
@@ -497,10 +531,10 @@ void MX_USART2_UART_Init(void)
 	huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
 	HAL_UART_Init(&huart2);
 }
-	 */
-	//configurazione dei pin per comunicazione
+ */
+//configurazione dei pin per comunicazione
 
-	/*
+/*
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -521,4 +555,4 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 	}
 }
-	 */
+ */
