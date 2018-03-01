@@ -14,7 +14,7 @@
 //elementi di ogni vettore di training o di sample
 #define vectorLength 50
 //numero dei vettori di training
-#define nOfSamples 20
+#define nOfSamples 100
 //numero di features che vengono estratte (media acc, media direz, devstand acc, devstand direz, correlaz acc/direz)
 #define nOfFeatures 15
 //numero di vicini considerati

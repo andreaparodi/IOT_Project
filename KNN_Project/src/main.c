@@ -38,7 +38,7 @@ int main(void)
 
 	float acceleration_data[3]={0};
 	float gyro_data[3]={0};
-
+/*
 	float trainingSetAccelerationX[nOfSamples][vectorLength]=
 	{
 			{ 45,4,5,7,2,1,8,66,8,12 },
@@ -177,13 +177,16 @@ int main(void)
 			{ 45,4,5,7,2,1,8,66,8,12 },
 			{ 45,4,5,7,2,1,8,66,8,12 }
 	};
-
+*/
 	//etichette del training set (note)
 	//
 	// 0: appartenenza a "classe1"
 	// 1: appartenenza a "classe2"
-	int trainingLabels[nOfSamples] = {1,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0};
+
+	//INSERIRE QUI TRAINING SET
 	float trainingSetFeatures[nOfSamples][nOfFeatures];
+
+	int trainingLabels[nOfSamples] = {1,1,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0};
 	/*
 		indici trainingFeatures:
 		0 : media accelerazione
@@ -222,7 +225,7 @@ int main(void)
 	  13	corr y
 	  14	corr z
 	 */
-
+/*
 	for (int ri = 0; ri < nOfSamples; ri++)
 	{
 		trainingSetFeatures[ri][0] = calculateMean(trainingSetAccelerationX[ri]);
@@ -245,6 +248,7 @@ int main(void)
 		trainingSetFeatures[ri][13] = calculateCorr(trainingSetAccelerationY[ri], trainingSetGyroY[ri], trainingSetFeatures[ri][1], trainingSetFeatures[ri][4], trainingSetFeatures[ri][7], trainingSetFeatures[ri][10]);
 		trainingSetFeatures[ri][14] = calculateCorr(trainingSetAccelerationZ[ri], trainingSetGyroZ[ri], trainingSetFeatures[ri][2], trainingSetFeatures[ri][5], trainingSetFeatures[ri][8], trainingSetFeatures[ri][11]);
 	}
+	*/
 	/*
 	for(int c=0;c<nOfSamples;c++)
 	{
