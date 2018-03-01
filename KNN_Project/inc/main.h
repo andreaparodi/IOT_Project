@@ -18,7 +18,7 @@
 //numero di features che vengono estratte (media acc, media direz, devstand acc, devstand direz, correlaz acc/direz)
 #define nOfFeatures 15
 //numero di vicini considerati
-#define k 7
+#define k 10
 //numero di campionamenti in un secondo
 #define sampleTime 100
 

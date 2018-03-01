@@ -69,5 +69,9 @@ float calculateCorr(float vect1[], float vect2[], int med1, int med2, int stdDev
 		}
 	}
 	corr = corr / (stdDev1*stdDev2);
+	if(corr>1)
+		corr=1;
+	else if(corr<-1)
+		corr=-1;
 	return corr;
 }
