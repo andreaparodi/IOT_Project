@@ -287,7 +287,15 @@ int main(void)
 			{0.035213,	1.337012,	1.543455,	-8.400701,	-6.613599,	140.642075,	0.795691,	10.141720,	14.110466,	0.795691,	10.141720,	14.110466,	1,		0.398382,	0.170754},
 			{0.057980,	-0.146722,	-8.228194,	-2.710751,	-6.700575,	140.306946,	0.617250,	7.209540,	14.426613,	0.617250,	7.209540,	14.426613,	1,		-0.887274,	-0.114009},
 	};
-
+//normalizzazione facoltativa
+/*
+	for(int i=0;i<nOfSamples;i++)
+	{
+		trainingSetFeatures[i][3]=trainingSetFeatures[i][3]/140;
+		trainingSetFeatures[i][4]=trainingSetFeatures[i][3]/140;
+		trainingSetFeatures[i][5]=trainingSetFeatures[i][3]/140;
+	}
+*/
 	int trainingLabels[nOfSamples] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 	/*
 		indici trainingFeatures:
@@ -572,6 +580,9 @@ int main(void)
 			sampleFeatures[3] = calculateMean(sampleToClassify_gyroX);
 			sampleFeatures[4] = calculateMean(sampleToClassify_gyroY);
 			sampleFeatures[5] = calculateMean(sampleToClassify_gyroZ);
+			//sampleFeatures[3] = calculateMean(sampleToClassify_gyroX)/140;
+			//sampleFeatures[4] = calculateMean(sampleToClassify_gyroY)/140;
+			//sampleFeatures[5] = calculateMean(sampleToClassify_gyroZ)/140;
 
 			sampleFeatures[6] = sqrt(calculateVar(sampleToClassify_accelerationX, sampleFeatures[0]));
 			sampleFeatures[7] = sqrt(calculateVar(sampleToClassify_accelerationY, sampleFeatures[1]));
@@ -584,6 +595,9 @@ int main(void)
 			sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
 			sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
 
+			//sampleFeatures[3] = sampleFeatures[3]/140;
+			//sampleFeatures[4] = sampleFeatures[4]/140;
+			//sampleFeatures[5] = sampleFeatures[5]/140;
 			for(int ri = 0; ri<nOfFeatures; ri++)
 			{
 				snprintf(buffer, sizeof buffer, "%f", sampleFeatures[ri]);
@@ -599,27 +613,28 @@ int main(void)
 			HAL_UART_Transmit(&huart2, (uint8_t*)sep, strlen(sep), 0xFFFF);
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 			*/
-			/*
+
 			for (int i = 0; i < nOfSamples; i++)
 			{
 				knn_index[i] = i;
 			}
 			findKNN(trainingSetFeatures, knn_index, sampleFeatures);
-			sampleLabel = classificate(trainingLabels, knn_index);
+			int sampleLabel = classificate(trainingLabels, knn_index);
+			//sampleLabel = classificate(trainingLabels, knn_index);
 			class="";
 			if (sampleLabel == 0)
 			{
-				class="classe 1\t\t";
+				class="alterato\t\t";
 			}
 			else
 			{
-				class="classe 2\t\t";
+				class="normale\t\t";
 			}
 
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 			HAL_UART_Transmit(&huart2, (uint8_t*)class, strlen(class), 0xFFFF);
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-			 */
+
 		}
 		HAL_Delay(sampleTime);
 	}
