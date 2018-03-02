@@ -5,6 +5,7 @@
 #include "i2c.h"
 #include "lsm6ds0.h"
 #include "usart.h"
+#include "gpio.h"
 #include <stdio.h>
 #include <string.h>
 

@@ -15,6 +15,7 @@ int main(void)
 	USART1_Init();
 	MX_USART2_UART_Init();
 	I2C1_init();
+	BSP_LED_Init(LED2);
 
 	if(LSM6DS0_Who_Am_I()==LSM6DS0_Who_am_i_val)
 	{
@@ -625,10 +626,12 @@ int main(void)
 			if (sampleLabel == 0)
 			{
 				class="alterato\t\t";
+				BSP_LED_On(LED2);
 			}
 			else
 			{
 				class="normale\t\t";
+				BSP_LED_Off(LED2);
 			}
 
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
