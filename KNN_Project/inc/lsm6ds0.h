@@ -28,7 +28,6 @@
  ***********************************************************************/
 
 #define LSM6DS0_add				0x6B	//01101011 Slave ADress (SAD). Se il pin SD0/SA0 è collegato a massa l'indirizzo sarà 01101010 (0x6A).[pag.27 Datasheet]
-//#define LSM6DS0_REFERENCE_G  	0x0B	-> Non utilizzato?
 #define LSM6DS0_WHO_AM_I  		0x0F	//Indirizzo del registro WHO_AM_I
 #define LSM6DS0_Who_am_i_val	0x68	//Valore del registro WHO_AM_I, da inviare per avviare la comunicazione.
 #define LSM6DS0_CTRL_REG1_G  	0X10	//Indirizzo del primo registro di controllo, associato alla configurazione del giroscopio.

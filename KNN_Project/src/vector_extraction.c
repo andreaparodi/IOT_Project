@@ -22,7 +22,6 @@ float calculateMean(float vect[])
 float calculateVar(float vect[], float mean)
 {
 	float var = 0.0;
-	//int length = sizeof(vect)/sizeof(vect[0]);
 	int i;
 	for (i = 0; i<vectorLength; i++)
 	{
@@ -32,7 +31,7 @@ float calculateVar(float vect[], float mean)
 	return var;
 }
 
-float calculateCorr(float vect1[], float vect2[], int med1, int med2, int stdDev1, int stdDev2)
+float calculateCorr(float vect1[], float vect2[], float med1, float med2, float stdDev1, float stdDev2)
 {
 	float corr = 0.0;
 	float temp = 0.0;

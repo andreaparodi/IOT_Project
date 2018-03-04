@@ -128,49 +128,21 @@ void LSM6DS0_ReadAcceleration(float vect[])
 	uint8_t I2C_RxBufferZ[I2C_RXBUFFERSIZE];
 
 	float X_acc, Y_acc, Z_acc;
-	//dato sperimentale
 	float acc_sensitivity = 3.224669;
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_L_G, 1, (uint8_t *)&I2C_RxBufferX[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_X_H_G, 1, (uint8_t *)&I2C_RxBufferX[1], 1, 10000);
 	int16_t dataX = (((uint16_t)I2C_RxBufferX[1]<<8 | I2C_RxBufferX[0]));
-	//int16_t dataX = ((((uint16_t)I2C_RxBufferX[1]<<8) +(uint16_t)I2C_RxBufferX[0]));
-	dataX = dataX>>4;
 	X_acc = (float)dataX;
 
-/*
-	char buffer[100];
-	char *tab = "\t";
-	char *newline = "\n\r";
-	*/
-	/*
-	snprintf(buffer, sizeof buffer, "%d", I2C_RxBufferX[0]);
-	HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-	HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
-	HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-	 */
-
-	//*mH+(float)HTS221_H0_rHx2/2;
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_L_G, 1, (uint8_t *)&I2C_RxBufferY[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Y_H_G, 1, (uint8_t *)&I2C_RxBufferY[1], 1, 10000);
 	int16_t dataY = (((uint16_t)I2C_RxBufferY[1]<<8 | I2C_RxBufferY[0]));
-	//int16_t dataY = ((((uint16_t)I2C_RxBufferY[1]<<8) +(uint16_t)I2C_RxBufferY[0]));
 	Y_acc = (float)dataY;
-	/*
-	snprintf(buffer, sizeof buffer, "%f", Y_acc);
-		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-		HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
-	 */
+
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_L_G, 1, (uint8_t *)&I2C_RxBufferZ[0], 1, 10000);
 	HAL_I2C_Mem_Read(&I2C1Handle, (uint16_t)LSM6DS0_add<<1 | 1, LSM6DS0_OUT_Z_H_G, 1, (uint8_t *)&I2C_RxBufferZ[1], 1, 10000);
 	int16_t dataZ = (((uint16_t)I2C_RxBufferZ[1]<<8 | I2C_RxBufferZ[0]));
-	//int16_t dataZ = ((((uint16_t)I2C_RxBufferZ[1]<<8) +(uint16_t)I2C_RxBufferZ[0]));
 	Z_acc = (float)dataZ;
-	/*
-	snprintf(buffer, sizeof buffer, "%f", Z_acc);
-		HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-		HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
-		HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
-	 */
 	vect[0]=X_acc*acc_sensitivity/1000;
 	vect[1]=Y_acc*acc_sensitivity/1000;
 	vect[2]=Z_acc*acc_sensitivity/1000;
