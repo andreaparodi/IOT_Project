@@ -7,23 +7,7 @@
 #include "gpio.h"
 void gpioInit(void)
 {
-
 	GPIO_InitTypeDef GPIO_InitStruct;
-
-	/* Enable the BUTTON Clock */
-	__GPIOA_CLK_ENABLE();
-
-	/* Configure Button pin as input */
-	GPIO_InitStruct.Pin = GPIO_PIN_0;
-	GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-	//HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0,GPIO_PIN_RESET);
-
-	HAL_NVIC_SetPriority(EXTI0_IRQn, 0 ,0);
-	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 
 	__GPIOB_CLK_ENABLE();
 	/* Configure the GPIO_LED pin */

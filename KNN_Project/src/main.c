@@ -12,7 +12,6 @@
 int main(void)
 {
 	HAL_Init();
-	USART1_Init();
 	MX_USART2_UART_Init();
 	I2C1_init();
 	BSP_LED_Init(LED2);
@@ -197,12 +196,14 @@ int main(void)
 			sampleFeatures[12] = calculateCorr(sampleToClassify_accelerationX, sampleToClassify_gyroX, sampleFeatures[0], sampleFeatures[3], sampleFeatures[6], sampleFeatures[9]);
 			sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
 			sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
+			/*
 			for(int ri = 0; ri<nOfFeatures; ri++)
 			{
 				snprintf(buffer, sizeof buffer, "%f", sampleFeatures[ri]);
 				HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
 				HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
 			}
+			*/
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 			for (int i = 0; i < nOfSamples; i++)
 			{
