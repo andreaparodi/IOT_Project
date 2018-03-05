@@ -24,21 +24,13 @@ float calculateDistance(float feature_vect1[], float feature_vect2[])
 void findKNN(float trainingFeatures[nOfSamples][nOfFeatures], int index[], float sampleFeatures[])
 {
 	//copio matrice features per non modificarla nel main
-	float temp[nOfSamples][nOfFeatures] = { 0 };
 	float distances[nOfSamples] = { 0 };
 
-	for (int ri = 0; ri < nOfSamples; ri++)
-	{
-		for (int col = 0; col < nOfFeatures; col++)
-		{
-			temp[ri][col] = trainingFeatures[ri][col];
-		}
-	}
 	//calcolo delle distanze
 	for (int i = 0; i < nOfSamples; i++)
 	{
 		distances[i] = calculateDistance(trainingFeatures[i], sampleFeatures);
-}
+	}
 	for (int i = 0; i <nOfSamples; i++)                     //Loop for ascending ordering
 	{
 		for (int j = 0; j < nOfSamples; j++)             //Loop for comparing other values
