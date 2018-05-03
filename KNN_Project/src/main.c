@@ -142,7 +142,27 @@ int main(void)
 			{1.546358,        -0.453517,       6.143638,        4.246376,        2.898177,        136.485123,      8.862868,        6.091926,        13.967298,       8.862868,        6.091926,        13.967298,       -0.203902,       1.000000,        -0.040541},
 	};
 	int trainingLabels[nOfSamples] = {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+//training set normalization
+	float max_values[nOfFeatures] = { 0 };
 
+	for (int i = 0; i < nOfFeatures; i++)
+	{
+		for (int sample = 0; sample < nOfSamples; sample++)
+		{
+			float temp_val = fabs(trainingSetFeatures[sample][i]);
+			if (temp_val > max_values[i])
+			{
+				max_values[i] = temp_val;
+			}
+		}
+	}
+	for (int i = 0; i < nOfFeatures; i++)
+	{
+		for (int sample = 0; sample < nOfSamples; sample++)
+		{
+			trainingSetFeatures[sample][i] = trainingSetFeatures[sample][i] / max_values[i];
+		}
+	}
 
 	float sampleToClassify_accelerationX[vectorLength] = { 0 };
 	float sampleToClassify_accelerationY[vectorLength] = { 0 };
@@ -196,14 +216,13 @@ int main(void)
 			sampleFeatures[12] = calculateCorr(sampleToClassify_accelerationX, sampleToClassify_gyroX, sampleFeatures[0], sampleFeatures[3], sampleFeatures[6], sampleFeatures[9]);
 			sampleFeatures[13] = calculateCorr(sampleToClassify_accelerationY, sampleToClassify_gyroY, sampleFeatures[1], sampleFeatures[4], sampleFeatures[7], sampleFeatures[10]);
 			sampleFeatures[14] = calculateCorr(sampleToClassify_accelerationZ, sampleToClassify_gyroZ, sampleFeatures[2], sampleFeatures[5], sampleFeatures[8], sampleFeatures[11]);
-			/*
-			for(int ri = 0; ri<nOfFeatures; ri++)
+
+			//sample normalization
+			for (int i = 0; i < nOfFeatures; i++)
 			{
-				snprintf(buffer, sizeof buffer, "%f", sampleFeatures[ri]);
-				HAL_UART_Transmit(&huart2, (uint8_t*)buffer, strlen(buffer), 0xFFFF);
-				HAL_UART_Transmit(&huart2, (uint8_t*)tab, strlen(tab), 0xFFFF);
+				sampleFeatures[i] = sampleFeatures[i] / max_values[i];
 			}
-			*/
+
 			HAL_UART_Transmit(&huart2, (uint8_t*)newline, strlen(newline), 0xFFFF);
 			for (int i = 0; i < nOfSamples; i++)
 			{
